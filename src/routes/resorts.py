@@ -20,3 +20,5 @@ async def list_resorts(db: Session = Depends(get_db)):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                             detail=f"There are no resorts in the database.")
 
+    return resorts
+
