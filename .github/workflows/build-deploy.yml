@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  docker:
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: Set up QEMU
@@ -28,3 +28,22 @@ jobs:
         with:
           push: true
           tags: danieldaum/project-snow-backend:latest
+
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: DigitalOcean App Platform deployment
+        uses: digitalocean/app_action@v1.0.0 # replace this with current version from https://github.com/digitalocean/app_action/releases
+        with:
+          app_name: whale-app
+          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+          images: '[
+            {
+            "name": "project_snow_api",
+            "image":{
+            "registry_type": "DOCKER_HUB",
+            "registry": "danieldaum",
+            "repository": "project-snow-backend",
+            "tag": "latest"
+            },
+            ]'
