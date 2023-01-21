@@ -38,8 +38,7 @@ jobs:
         with:
           app_name: whale-app
           token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
-          images: '[
-            {
+          images: '[{
             "name": "project_snow_api",
             "image":{
             "registry_type": "DOCKER_HUB",
@@ -47,4 +46,4 @@ jobs:
             "repository": "project-snow-backend",
             "tag": "latest"
             },
-            ]'
+            }]'
