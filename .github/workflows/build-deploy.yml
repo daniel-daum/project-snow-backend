@@ -40,7 +40,7 @@ jobs:
           token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
           images: '[
             {
-            "name":"whale-app",
+            "name":"danieldaum-project-snow-backend",
             "image":{
             "registry_type": "DOCKER_HUB",
             "registry":"danieldaum",
