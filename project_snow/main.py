@@ -22,6 +22,6 @@ app.include_router(resorts.router)
 #root
 @app.get("/")
 async def root():
-    """Returns a link to the API documentation!"""
+    """Returns a link to the API documentation"""
 
     return {"Root": f"API documentation is located at {URL + 'docs'}"}
