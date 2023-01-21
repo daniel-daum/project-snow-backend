@@ -2,8 +2,8 @@ from logging.config import fileConfig
 
 from sqlalchemy import engine_from_config
 from sqlalchemy import pool
-from src.database.models import Base
-from src.settings import settings
+from project_snow.database.models import Base
+from project_snow.settings import settings
 from alembic import context
 
 # this is the Alembic Config object, which provides
