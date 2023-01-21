@@ -27,7 +27,7 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           push: true
-          tags: danieldaum/project-snow-backend:0.1
+          tags: danieldaum/project-snow-backend:latest
 
   deploy:
     needs: [build]
@@ -40,11 +40,11 @@ jobs:
           token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
           images: '[
             {
-            "name":"danieldaum-project-snow-backend",
+            "name":"whale-app",
             "image":{
             "registry_type": "DOCKER_HUB",
             "registry":"danieldaum",
             "repository":"project-snow-backend",
-            "tag":"0.1"
+            "tag":"latest"
             }
             }]'
