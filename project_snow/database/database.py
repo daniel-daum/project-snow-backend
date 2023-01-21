@@ -1,7 +1,7 @@
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
-from src.settings import settings
+from project_snow.settings import settings
 
 Base = declarative_base()
 
