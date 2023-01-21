@@ -27,7 +27,7 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           push: true
-          tags: danieldaum/project-snow-backend:latest
+          tags: danieldaum/project-snow-backend:0.1
 
   deploy:
     needs: [build]
@@ -45,6 +45,6 @@ jobs:
             "registry_type": "DOCKER_HUB",
             "registry":"danieldaum",
             "repository":"project-snow-backend",
-            "tag":"latest"
+            "tag":"0.1"
             }
             }]'
