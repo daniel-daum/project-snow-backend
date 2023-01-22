@@ -1,5 +1,6 @@
 from .database import Base
 from sqlalchemy import TIMESTAMP, Column, ForeignKey, Integer, String, Date, null, Boolean, Float
+from sqlalchemy.sql.expression import text
 
 class Resort(Base):
     __tablename__ = "resorts"
@@ -61,3 +62,15 @@ class Hourly_forecast(Base):
     valid_from = Column(TIMESTAMP(timezone=True))
     valid_to = Column(TIMESTAMP(timezone=True))
 
+class User(Base):
+    __tablename__ = "users"
+
+    id = Column(Integer, primary_key=True, nullable=False)
+    first_name = Column(String(255), nullable=False)
+    last_name = Column(String(255), nullable=False)
+    email = Column(String(100), nullable=False, unique=True)
+    password = Column(String, nullable=False)
+    created_at = Column(TIMESTAMP(timezone=True),
+                        nullable=False, server_default=text('now()'))
+    last_login = Column(TIMESTAMP(timezone=True))
+    email_verified = Column(Boolean, default=False)
