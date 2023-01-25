@@ -14,7 +14,8 @@ RUN pip install \
     uvicorn \
     python-jose[cryptography] \
     passlib[bcrypt] \
-    python-multipart
+    python-multipart \
+    pydantic[email]
 
 COPY . .
 

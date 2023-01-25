@@ -12,7 +12,8 @@ setup(
         "uvicorn",
         "python-jose[cryptography]",
         "passlib[bcrypt]",
-        "python-multipart"
+        "python-multipart",
+        "pydantic[email]"
 
     ],
     extras_require={"dev": ["black", "isort", "ruff"]},
