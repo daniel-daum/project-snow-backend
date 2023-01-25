@@ -18,7 +18,10 @@ async def create_new_user(user: schemas.CreateUser, db: Session = Depends(get_db
     if db_user is None:
 
         # CREATES A NEW USER IN THE DB
-        new_user = users_crud.create_user(db, user)
+        # new_user = users_crud.create_user(db, user)
+
+        # CREATEA A NEW USER IN THE UNACTIVATED USER ACCOUNT DB
+        new_user = users_crud.create_unactivated_user(db,user)
 
         # CREATES A JWT FOR EMAIL VERIFICATION
         token = oauth2.create_access_token(

@@ -88,14 +88,26 @@ class User(Base):
         orm_mode = True
 
 
+class unactivated_users(Base):
+    __tablename__ = "unactivated_users"
+
+    id = Column(Integer, primary_key=True, nullable=False)
+    first_name = Column(String(255), nullable=False)
+    last_name = Column(String(255), nullable=False)
+    email = Column(String(100), nullable=False, unique=True)
+    password = Column(String, nullable=False)
+    created_at = Column(TIMESTAMP(timezone=True),
+                        nullable=False, server_default=text('now()'))
+
+
 class Email_Verification(Base):
     __tablename__ = "email_verification"
 
     id = Column(Integer, primary_key=True, nullable=False)
     temp_jwt = Column(String(255), nullable=False)
-    users_id = Column(Integer, nullable=False)
+    users_id = Column(Integer, ForeignKey("unactivated_users.id"), nullable=False,)
     users_email = Column(String(100), ForeignKey(
-        "users.email"), nullable=False)
+        "unactivated_users.email"), nullable=False)
     created_at = Column(TIMESTAMP(timezone=True),
                         nullable=False, server_default=text('now()'))
 

@@ -63,6 +63,13 @@ class CreateUser(UserBase):
     class Config:
         orm_mode = True
 
+class CreateUserVerified(CreateUser):
+    email_verified:bool
+
+    class Config:
+        orm_mode = True
+
+
 
 # User Response Schema
 class User(UserBase):

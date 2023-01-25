@@ -53,27 +53,31 @@ async def verify_email(token: str, db: Session = Depends(get_db)):
     # Recieve, deconstruct, verify token is valid
     payload = oauth2.verify_access_token(token, credentials_exception)
 
-    # Update email verified column to True
-    db.query(models.User).filter(models.User.id == payload.id).update(
-        {models.User.email_verified: True}, synchronize_session=False)
-    db.commit()
+    # Get the unactivated user info and parse
+    unactivated_user = users_crud.get_unactivated_user_by_id(db, payload.id)
 
-    user = users_crud.get_user_by_id(db, payload.id)
+    unactivated_user_info = unactivated_user.__dict__ 
+
+    new_user_data = {
+        "first_name": unactivated_user_info.get("first_name"),
+        "last_name": unactivated_user_info.get("last_name"),
+        "email": unactivated_user_info.get("email"),
+        "password": unactivated_user_info.get("password"),
+        "email_verified": True
+    }
+
+    # Create a new active user
+    new_user = users_crud.create_user(db, new_user_data)
 
     # Give user permissions in permissions table after email is verfied
-    role_data = {"users_id": payload.id, "role": f"user",
+    role_data = {"users_id": new_user.id, "role": f"user",
                  "admin_created_by": f"daniel"}
 
     # Give account user level permissions
     roles_crud.create_role(db, role_data)
 
 
-    db.query(models.User).filter(models.User.id == payload.id).update(
-        {models.User.email_verified: True}, synchronize_session=False)
-    db.commit()
-
-
-    blacklist_token = {"token": token, "users_id": user.id}
+    blacklist_token = {"token": token, "users_id": new_user.id}
 
     # Add TOKEN TO BLACKLIST TABLE
     token_crud.add_token_to_blist(db, blacklist_token)

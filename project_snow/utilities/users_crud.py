@@ -9,6 +9,11 @@ def get_user_by_id(db: Session, id: int):
 
     return db.query(models.User).filter(models.User.id == id).first()
 
+def get_unactivated_user_by_id(db: Session, id: int):
+    """Returns a single user based on id."""
+
+    return db.query(models.unactivated_users).filter(models.unactivated_users.id == id).first()
+
 # GET ONE USER BY EMAIL
 def get_user_by_email(db: Session, user: schemas.CreateUser):
     """Returns a single user based on email."""
@@ -17,13 +22,26 @@ def get_user_by_email(db: Session, user: schemas.CreateUser):
 
 
 # CREATE NEW USER
-def create_user(db: Session, user: schemas.CreateUser):
+def create_user(db: Session, user):
+    """Creates a new user in the database."""
+
+    new_user = models.User(**user)
+
+    db.add(new_user)
+    db.commit()
+    db.refresh(new_user)
+
+    return new_user
+
+
+# CREATE NEW USER
+def create_unactivated_user(db: Session, user: schemas.CreateUser):
     """Creates a new user in the database."""
 
     hashed_password = utils.hash(user.password)
     user.password = hashed_password
 
-    new_user = models.User(**user.dict())
+    new_user = models.unactivated_users(**user.dict())
 
     db.add(new_user)
     db.commit()
