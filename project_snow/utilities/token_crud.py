@@ -1,8 +1,6 @@
-from ..database import models
 from sqlalchemy.orm import Session
-from ..database import schemas
 
-
+from ..database import models, schemas
 
 
 def add_token_to_blist(db: Session, token: schemas.addToken):

@@ -13,7 +13,8 @@ RUN pip install \
     python-dotenv \
     uvicorn \
     python-jose[cryptography] \
-    passlib[bcrypt]
+    passlib[bcrypt] \
+    python-multipart
 
 COPY . .
 

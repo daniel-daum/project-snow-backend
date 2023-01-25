@@ -1,10 +1,11 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from .routes import resorts, auth, users
+
+from .routes import auth, resorts, users
 
 app = FastAPI(title="Project Snow", version="0.0.0")
 
-URL:str = "https://www.localhost:8000/"
+URL: str = "https://www.localhost:8000/"
 
 origins = ["*"]
 
@@ -21,7 +22,7 @@ app.include_router(auth.router)
 app.include_router(users.router)
 
 
-#root
+# root
 @app.get("/")
 async def root():
     """Returns a link to the API documentation"""

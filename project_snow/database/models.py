@@ -1,6 +1,17 @@
-from .database import Base
-from sqlalchemy import TIMESTAMP, Column, ForeignKey, Integer, String, Date, null, Boolean, Float
+from sqlalchemy import (
+    TIMESTAMP,
+    Boolean,
+    Column,
+    Date,
+    Float,
+    ForeignKey,
+    Integer,
+    String,
+)
 from sqlalchemy.sql.expression import text
+
+from .database import Base
+
 
 class Resort(Base):
     __tablename__ = "resorts"
@@ -44,7 +55,6 @@ class Daily_forecast(Base):
         orm_mode = True
 
 
-
 class Hourly_forecast(Base):
     __tablename__ = "hourly_forecast"
 
@@ -71,6 +81,7 @@ class Hourly_forecast(Base):
     class Config:
         orm_mode = True
 
+
 class User(Base):
     __tablename__ = "users"
 
@@ -79,8 +90,9 @@ class User(Base):
     last_name = Column(String(255), nullable=False)
     email = Column(String(100), nullable=False, unique=True)
     password = Column(String, nullable=False)
-    created_at = Column(TIMESTAMP(timezone=True),
-                        nullable=False, server_default=text('now()'))
+    created_at = Column(
+        TIMESTAMP(timezone=True), nullable=False, server_default=text("now()")
+    )
     last_login = Column(TIMESTAMP(timezone=True))
     email_verified = Column(Boolean, default=False)
 
@@ -96,8 +108,9 @@ class unactivated_users(Base):
     last_name = Column(String(255), nullable=False)
     email = Column(String(100), nullable=False, unique=True)
     password = Column(String, nullable=False)
-    created_at = Column(TIMESTAMP(timezone=True),
-                        nullable=False, server_default=text('now()'))
+    created_at = Column(
+        TIMESTAMP(timezone=True), nullable=False, server_default=text("now()")
+    )
 
 
 class Email_Verification(Base):
@@ -105,14 +118,21 @@ class Email_Verification(Base):
 
     id = Column(Integer, primary_key=True, nullable=False)
     temp_jwt = Column(String(255), nullable=False)
-    users_id = Column(Integer, ForeignKey("unactivated_users.id"), nullable=False,)
-    users_email = Column(String(100), ForeignKey(
-        "unactivated_users.email"), nullable=False)
-    created_at = Column(TIMESTAMP(timezone=True),
-                        nullable=False, server_default=text('now()'))
+    users_id = Column(
+        Integer,
+        ForeignKey("unactivated_users.id"),
+        nullable=False,
+    )
+    users_email = Column(
+        String(100), ForeignKey("unactivated_users.email"), nullable=False
+    )
+    created_at = Column(
+        TIMESTAMP(timezone=True), nullable=False, server_default=text("now()")
+    )
 
     class Config:
         orm_mode = True
+
 
 class User_Roles(Base):
     __tablename__ = "user_roles"
@@ -121,11 +141,13 @@ class User_Roles(Base):
     users_id = Column(Integer, ForeignKey("users.id"))
     role = Column(String(255), nullable=False)
     admin_created_by = Column(String(255))
-    created_at = Column(TIMESTAMP(timezone=True),
-                        nullable=False, server_default=text('now()'))
+    created_at = Column(
+        TIMESTAMP(timezone=True), nullable=False, server_default=text("now()")
+    )
 
     class Config:
         orm_mode = True
+
 
 class Token_list(Base):
     __tablename__ = "generated_tokens"
@@ -133,8 +155,9 @@ class Token_list(Base):
     id = Column(Integer, primary_key=True, nullable=False)
     token = Column(String(255), nullable=False)
     users_id = Column(Integer, ForeignKey("users.id"))
-    created_at = Column(TIMESTAMP(timezone=True),
-                        nullable=False, server_default=text('now()'))
+    created_at = Column(
+        TIMESTAMP(timezone=True), nullable=False, server_default=text("now()")
+    )
 
     class Config:
         orm_mode = True

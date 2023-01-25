@@ -1,40 +1,48 @@
 from fastapi import APIRouter, Depends, HTTPException, status
-from project_snow.database import schemas
-from sqlalchemy.orm import Session
-from ..database.database import get_db
-from fastapi.security.oauth2 import OAuth2PasswordRequestForm
-from ..database import models
-from ..utilities import utils, oauth2, token_crud, users_crud, roles_crud
 from fastapi.responses import HTMLResponse
+from fastapi.security.oauth2 import OAuth2PasswordRequestForm
+from sqlalchemy.orm import Session
 
+from project_snow.database import schemas
+
+from ..database import models
+from ..database.database import get_db
+from ..utilities import oauth2, roles_crud, token_crud, users_crud, utils
 
 router = APIRouter(tags=["Authentication"], prefix="/api/auth")
 
 
 @router.post("/login", tags=["Authentication"], response_model=schemas.Token)
-async def authenticate(user_credentials: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
+async def authenticate(
+    user_credentials: OAuth2PasswordRequestForm = Depends(),
+    db: Session = Depends(get_db),
+):
     """Authenticates user credentials and generates a JWT"""
 
-    unauthenticated_user = db.query(models.User).filter(models.User.email == user_credentials.username).first()
+    unauthenticated_user = (
+        db.query(models.User)
+        .filter(models.User.email == user_credentials.username)
+        .first()
+    )
 
     if unauthenticated_user is None:
         raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN, detail=f"Invalid Credentials")
-    
+            status_code=status.HTTP_403_FORBIDDEN, detail="Invalid Credentials"
+        )
+
     if not utils.verify(user_credentials.password, unauthenticated_user.password):
         raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN, detail=f"Invalid Credentials")
-    
+            status_code=status.HTTP_403_FORBIDDEN, detail="Invalid Credentials"
+        )
+
     authenticated_user = unauthenticated_user
 
     # CREATE AN ACCESS TOKEN
     access_token = oauth2.create_access_token(data={"user_id": authenticated_user.id})
 
-
     # Add TOKEN TO BLACKLIST TABLE
     blacklist_token = {"token": access_token, "users_id": authenticated_user.id}
     token_crud.add_token_to_blist(db, blacklist_token)
-
 
     # UPDATE USERS LAST LOGIN
     users_crud.update_last_login(db, authenticated_user.id)
@@ -42,13 +50,17 @@ async def authenticate(user_credentials: OAuth2PasswordRequestForm = Depends(), 
     return {"access_token": access_token, "token_type": "bearer"}
 
 
-
-@router.get("/verify_email/{token}", tags=["Authentication"], response_class=HTMLResponse)
+@router.get(
+    "/verify_email/{token}", tags=["Authentication"], response_class=HTMLResponse
+)
 async def verify_email(token: str, db: Session = Depends(get_db)):
 
     # Create a credentials exception
-    credentials_exception = HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,
-                                          detail="Could not validate email credentials", headers={"WWW-Authenticate": "Bearer"})
+    credentials_exception = HTTPException(
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        detail="Could not validate email credentials",
+        headers={"WWW-Authenticate": "Bearer"},
+    )
 
     # Recieve, deconstruct, verify token is valid
     payload = oauth2.verify_access_token(token, credentials_exception)
@@ -56,26 +68,28 @@ async def verify_email(token: str, db: Session = Depends(get_db)):
     # Get the unactivated user info and parse
     unactivated_user = users_crud.get_unactivated_user_by_id(db, payload.id)
 
-    unactivated_user_info = unactivated_user.__dict__ 
+    unactivated_user_info = unactivated_user.__dict__
 
     new_user_data = {
         "first_name": unactivated_user_info.get("first_name"),
         "last_name": unactivated_user_info.get("last_name"),
         "email": unactivated_user_info.get("email"),
         "password": unactivated_user_info.get("password"),
-        "email_verified": True
+        "email_verified": True,
     }
 
     # Create a new active user
     new_user = users_crud.create_user(db, new_user_data)
 
     # Give user permissions in permissions table after email is verfied
-    role_data = {"users_id": new_user.id, "role": f"user",
-                 "admin_created_by": f"daniel"}
+    role_data = {
+        "users_id": new_user.id,
+        "role": "user",
+        "admin_created_by": "daniel",
+    }
 
     # Give account user level permissions
     roles_crud.create_role(db, role_data)
-
 
     blacklist_token = {"token": token, "users_id": new_user.id}
 

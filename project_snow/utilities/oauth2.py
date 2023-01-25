@@ -1,15 +1,15 @@
-from jose import JWTError, jwt
 from datetime import datetime, timedelta
-from sqlalchemy.orm import session
-from ..database import schemas
-from ..database import database
-from ..database import models
-from fastapi import Depends, status, HTTPException
+
+from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
+from jose import JWTError, jwt
+from sqlalchemy.orm import session
+
 from project_snow.settings import settings
 
+from ..database import database, models, schemas
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl='login')
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
 # oauth2_scheme = OAuth2PasswordBearerFromCookies(tokenUrl='login')
 
 KEY = settings.KEY
@@ -49,14 +49,18 @@ def verify_access_token(token: str, credentials_exception):
     return token_data
 
 
-def get_current_user(token: str = Depends(oauth2_scheme), db: session = Depends(database.get_db)):
+def get_current_user(
+    token: str = Depends(oauth2_scheme), db: session = Depends(database.get_db)
+):
 
-    credentials_exception = HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,
-                                          detail="Could not validate credentials", headers={"WWW-Authenticate": "Bearer"})
+    credentials_exception = HTTPException(
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        detail="Could not validate credentials",
+        headers={"WWW-Authenticate": "Bearer"},
+    )
 
     token = verify_access_token(token, credentials_exception)
 
-    current_user = db.query(models.User).filter(
-        models.User.id == token.id).first()
+    current_user = db.query(models.User).filter(models.User.id == token.id).first()
 
     return current_user.id

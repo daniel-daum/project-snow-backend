@@ -1,5 +1,7 @@
-from sqlalchemy.orm import Session
 from datetime import datetime
+
+from sqlalchemy.orm import Session
+
 from ..database import models, schemas
 from . import utils
 
@@ -9,10 +11,16 @@ def get_user_by_id(db: Session, id: int):
 
     return db.query(models.User).filter(models.User.id == id).first()
 
+
 def get_unactivated_user_by_id(db: Session, id: int):
     """Returns a single user based on id."""
 
-    return db.query(models.unactivated_users).filter(models.unactivated_users.id == id).first()
+    return (
+        db.query(models.unactivated_users)
+        .filter(models.unactivated_users.id == id)
+        .first()
+    )
+
 
 # GET ONE USER BY EMAIL
 def get_user_by_email(db: Session, user: schemas.CreateUser):
@@ -59,12 +67,14 @@ def delete_user(db: Session, user: schemas.User):
 
     return None
 
+
 def update_last_login(db: Session, user_id: int):
 
     current_datetime = datetime.now()
 
     db.query(models.User).filter(models.User.id == user_id).update(
-        {models.User.last_login: current_datetime})
+        {models.User.last_login: current_datetime}
+    )
 
     db.commit()
 

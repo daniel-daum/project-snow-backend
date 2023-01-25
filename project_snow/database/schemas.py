@@ -1,36 +1,38 @@
-from pydantic import BaseModel, EmailStr
 from datetime import datetime
 from typing import Optional
+
+from pydantic import BaseModel, EmailStr
 
 
 class ResortBase(BaseModel):
 
     id: int
-    name:str
-    city:str
-    state:str
-    latitude:float
-    longitude:float
-    last_modified_at:datetime
+    name: str
+    city: str
+    state: str
+    latitude: float
+    longitude: float
+    last_modified_at: datetime
 
     class Config:
         orm_mode = True
-
 
 
 class UserLogin(BaseModel):
-    email:EmailStr
-    password:str
+    email: EmailStr
+    password: str
 
     class Config:
         orm_mode = True
+
 
 class Token(BaseModel):
-    access_token:str
-    token_type:str
+    access_token: str
+    token_type: str
 
     class Config:
         orm_mode = True
+
 
 class addToken(BaseModel):
     token: str
@@ -53,9 +55,10 @@ class UserBase(BaseModel):
     first_name: str
     last_name: str
     email: EmailStr
-    
+
     class Config:
         orm_mode = True
+
 
 class CreateUser(UserBase):
     password: str
@@ -63,12 +66,12 @@ class CreateUser(UserBase):
     class Config:
         orm_mode = True
 
+
 class CreateUserVerified(CreateUser):
-    email_verified:bool
+    email_verified: bool
 
     class Config:
         orm_mode = True
-
 
 
 # User Response Schema
@@ -91,6 +94,7 @@ class TokenData(BaseModel):
 
 class CreateRole(BaseModel):
     """Create a Role Schema"""
+
     users_id: int
     role: str
     admin_created_by: str
@@ -101,6 +105,7 @@ class CreateRole(BaseModel):
 
 class GetRoleResponse(CreateRole):
     """Create a Role response Schema"""
+
     created_at: datetime
 
     class Config:
@@ -119,7 +124,6 @@ class EmailVerify(BaseModel):
 
 class EmailVerifyResponse(EmailVerify):
     created_at: datetime
-
 
     class Config:
         orm_mode = True
