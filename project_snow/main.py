@@ -1,8 +1,8 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from .routes import resorts
+from .routes import resorts, auth, users
 
-app = FastAPI(title="ProjectS", version="0.0.0")
+app = FastAPI(title="Project Snow", version="0.0.0")
 
 URL:str = "https://www.localhost:8000/"
 
@@ -17,6 +17,8 @@ app.add_middleware(
 )
 
 app.include_router(resorts.router)
+app.include_router(auth.router)
+app.include_router(users.router)
 
 
 #root

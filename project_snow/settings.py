@@ -15,9 +15,9 @@ class Settings(BaseSettings):
     DBSTR: str = f"{DBTYPE}://{DBUSER}:{DBPASS}@{DBHOST}:{DBPORT}/{DBNAME}"
     # DBSTR_TEST: str = f"{DBTYPE}://{DBUSER}:{DBPASS}@{DBHOST}:{DBPORT}/{DBNAME_TEST}"
 
-    # KEY: str = os.getenv("KEY")
-    # ALGO: str = os.getenv("ALGO")
-    # EXPIRE: str = os.getenv("EXPIRE")
+    KEY: str = os.getenv("KEY")
+    ALGO: str = os.getenv("ALGO")
+    EXPIRE: str = os.getenv("EXPIRE")
 
 
 settings = Settings()

@@ -74,3 +74,13 @@ class User(Base):
                         nullable=False, server_default=text('now()'))
     last_login = Column(TIMESTAMP(timezone=True))
     email_verified = Column(Boolean, default=False)
+
+
+class Token_list(Base):
+    __tablename__ = "generated_tokens"
+
+    id = Column(Integer, primary_key=True, nullable=False)
+    token = Column(String(255), nullable=False)
+    users_id = Column(Integer, ForeignKey("users.id"))
+    created_at = Column(TIMESTAMP(timezone=True),
+                        nullable=False, server_default=text('now()'))

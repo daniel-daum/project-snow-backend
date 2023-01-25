@@ -11,7 +11,9 @@ RUN pip install \
     psycopg2 \
     alembic \
     python-dotenv \
-    uvicorn
+    uvicorn \
+    python-jose[cryptography] \
+    passlib[bcrypt]
 
 COPY . .
 
