@@ -19,5 +19,9 @@ class Settings(BaseSettings):
     ALGO: str = os.getenv("ALGO")
     EXPIRE: str = os.getenv("EXPIRE")
 
+    EMAIL:str = os.getenv("EMAIL")
+    EMAIL_SERVER:str = os.getenv("EMAIL_SERVER")
+    EMAIL_SERVER_KEY:str = os.getenv("EMAIL_SERVER_KEY")
+
 
 settings = Settings()

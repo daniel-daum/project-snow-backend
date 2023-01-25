@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from project_snow.database import schemas
 from sqlalchemy.orm import Session
 from ..database.database import get_db
-from ..utilities import users_crud, oauth2
+from ..utilities import users_crud, oauth2,utils
 
 router = APIRouter(tags=["Users"], prefix="/api/users")
 
@@ -24,8 +24,8 @@ async def create_new_user(user: schemas.CreateUser, db: Session = Depends(get_db
         token = oauth2.create_access_token(
             data={"user_id": new_user.id, "users_email": new_user.email})
 
-        # # SENDS AN EMAIL WITH THE JWT
-        # crud.send_verification_email(db, token, new_user)
+        # SENDS AN EMAIL WITH THE JWT
+        utils.send_verification_email(db, token, new_user)
 
     else:
         raise HTTPException(
