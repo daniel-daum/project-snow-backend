@@ -9,6 +9,9 @@ from ..utilities import oauth2, users_crud, utils
 router = APIRouter(tags=["Users"], prefix="/api/users")
 
 
+# , current_user_id: int = Depends(oauth2.get_current_user)
+
+
 # CREATE A NEW USER
 @router.post(
     "/",
@@ -16,7 +19,6 @@ router = APIRouter(tags=["Users"], prefix="/api/users")
     response_model=schemas.User,
     tags=["Users"],
 )
-# , current_user_id: int = Depends(oauth2.get_current_user)
 async def create_new_user(user: schemas.CreateUser, db: Session = Depends(get_db)):
     """Creates a new user in the database."""
 

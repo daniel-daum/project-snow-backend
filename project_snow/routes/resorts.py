@@ -10,7 +10,7 @@ from ..utilities.resorts_crud import get_all_resorts, get_resort_by_id
 
 router = APIRouter(tags=["Resorts"], prefix="/api/resorts")
 
-
+#, current_user_id: int = Depends(oauth2.get_current_user)
 # Get a list of the resorts
 @router.get(
     "/",
@@ -19,8 +19,7 @@ router = APIRouter(tags=["Resorts"], prefix="/api/resorts")
     tags=["Resorts"],
 )
 async def resorts(
-    db: Session = Depends(get_db),
-    current_user_id: int = Depends(oauth2.get_current_user),
+    db: Session = Depends(get_db)
 ):
     """Returns a list of all the resorts in the database."""
 
@@ -34,7 +33,7 @@ async def resorts(
 
     return resorts
 
-
+#     current_user_id: int = Depends(oauth2.get_current_user)
 # Return one resort
 @router.get(
     "/{id}",
@@ -45,7 +44,7 @@ async def resorts(
 async def resort(
     id: int,
     db: Session = Depends(get_db),
-    current_user_id: int = Depends(oauth2.get_current_user),
+
 ):
     """Returns a single resort based on its id."""
 
