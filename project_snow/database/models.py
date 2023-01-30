@@ -22,6 +22,7 @@ class Resort(Base):
     state = Column(String(255), nullable=False)
     latitude = Column(Float)
     longitude = Column(Float)
+    zip = Column(Integer)
     last_modified_at = Column(TIMESTAMP(timezone=True))
 
     class Config:
