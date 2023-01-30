@@ -16,7 +16,8 @@ router = APIRouter(tags=["Users"], prefix="/api/users")
     response_model=schemas.User,
     tags=["Users"],
 )
-async def create_new_user(user: schemas.CreateUser, db: Session = Depends(get_db), current_user_id: int = Depends(oauth2.get_current_user)):
+# , current_user_id: int = Depends(oauth2.get_current_user)
+async def create_new_user(user: schemas.CreateUser, db: Session = Depends(get_db)):
     """Creates a new user in the database."""
 
     db_user = users_crud.get_user_by_email(db, user)
