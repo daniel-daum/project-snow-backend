@@ -7,8 +7,7 @@ load_dotenv("./.env")
 
 
 class Settings(BaseSettings):
-
-    DBSTR: str =os.getenv("DBSTR")
+    DBSTR: str = os.getenv("DBSTR")
 
     KEY: str = os.getenv("KEY")
     ALGO: str = os.getenv("ALGO")

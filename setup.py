@@ -13,7 +13,8 @@ setup(
         "python-jose[cryptography]",
         "passlib[bcrypt]",
         "python-multipart",
-        "pydantic[email]"
+        "pydantic[email]",
+        "python-dotenv"
 
     ],
     extras_require={"dev": ["black", "isort", "ruff"]},

@@ -1,13 +1,5 @@
-from sqlalchemy import (
-    TIMESTAMP,
-    Boolean,
-    Column,
-    Date,
-    Float,
-    ForeignKey,
-    Integer,
-    String,
-)
+from sqlalchemy import (TIMESTAMP, Boolean, Column, Date, Float, ForeignKey,
+                        Integer, String)
 from sqlalchemy.sql.expression import text
 
 from .database import Base

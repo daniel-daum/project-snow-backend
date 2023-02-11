@@ -18,7 +18,6 @@ def get_resort_by_id(db: Session, id: int):
 
 
 def update_supply_last_modified(db: Session, resort_id: int):
-
     current_datetime = datetime.now()
 
     db.query(models.Resort).filter(models.Resort.id == resort_id).update(

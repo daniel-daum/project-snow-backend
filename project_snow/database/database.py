@@ -10,6 +10,7 @@ engine = create_engine(settings.DBSTR)
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
+
 # DB Dependency
 def get_db():
     db = SessionLocal()

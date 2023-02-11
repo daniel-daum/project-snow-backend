@@ -54,7 +54,6 @@ async def authenticate(
     "/verify_email/{token}", tags=["Authentication"], response_class=HTMLResponse
 )
 async def verify_email(token: str, db: Session = Depends(get_db)):
-
     # Create a credentials exception
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,

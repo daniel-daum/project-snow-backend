@@ -17,7 +17,6 @@ def hash(password: str):
 
 
 def verify(plain_password, hashed_password):
-
     return pwd_context.verify(plain_password, hashed_password)
 
 
@@ -25,7 +24,6 @@ def verify(plain_password, hashed_password):
 
 
 def send_verification_email(db: Session, token: str, user: schemas.User):
-
     URL = ""
 
     if settings.DEPLOYMENT_ENV == "development":

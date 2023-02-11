@@ -26,7 +26,6 @@ async def create_new_user(user: schemas.CreateUser, db: Session = Depends(get_db
 
     # checks if user already exists in the database.
     if db_user is None:
-
         # CREATES A NEW USER IN THE DB
         # new_user = users_crud.create_user(db, user)
 

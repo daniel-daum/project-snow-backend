@@ -69,7 +69,6 @@ def delete_user(db: Session, user: schemas.User):
 
 
 def update_last_login(db: Session, user_id: int):
-
     current_datetime = datetime.now()
 
     db.query(models.User).filter(models.User.id == user_id).update(

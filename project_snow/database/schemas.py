@@ -5,7 +5,6 @@ from pydantic import BaseModel, EmailStr
 
 
 class ResortBase(BaseModel):
-
     id: int
     name: str
     city: str
