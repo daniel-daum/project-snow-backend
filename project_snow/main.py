@@ -1,11 +1,17 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from project_snow.settings import settings
 
-from .routes import auth, resorts, users
+from .routes import auth, resorts, users, weather
 
 app = FastAPI(title="Project Snow", version="0.0.0")
 
-URL: str = "https://www.localhost:8000/"
+if settings.DEPLOYMENT_ENV == "development":
+
+    URL: str = "https://www.localhost:8000/"
+
+else:
+    URL: str = "https://stingray-app-rg8ve.ondigitalocean.app/"
 
 origins = ["*"]
 
@@ -20,6 +26,7 @@ app.add_middleware(
 app.include_router(resorts.router)
 app.include_router(auth.router)
 app.include_router(users.router)
+app.include_router(weather.router)
 
 
 # root
